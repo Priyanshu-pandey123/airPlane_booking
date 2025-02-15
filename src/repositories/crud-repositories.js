@@ -1,5 +1,7 @@
 const { where } = require("sequelize");
 const logger = require("../config/logger-config");
+const { AppError } = require("../utils/error/app-error");
+const { StatusCodes } = require("http-status-codes");
 
 class CrudRepository {
   constructor(model) {
@@ -7,13 +9,8 @@ class CrudRepository {
   }
 
   async create(data) {
-    try {
-      const response = await this.model.create(data);
-      return response;
-    } catch (err) {
-      logger.error("Something went wrong in create: " + err);
-      throw err; // Re-throw the error after logging
-    }
+    const response = await this.model.create(data);
+    return response;
   }
 
   async destroy(id) {
@@ -23,6 +20,7 @@ class CrudRepository {
           id: id,
         },
       });
+
       return response;
     } catch (err) {
       logger.error("Something went wrong in destroy: " + err);
@@ -42,11 +40,14 @@ class CrudRepository {
 
   async findOne(id) {
     try {
-      const response = await this.model.findOne({
-        where: {
-          id: id,
-        },
-      });
+      const response = await this.model.findByPk(id);
+
+      if (!response) {
+        throw new AppError(
+          "cannot find the data by this id",
+          StatusCodes.INTERNAL_SERVER_ERROR
+        );
+      }
       return response;
     } catch (err) {
       logger.error("Something went wrong in findOne: " + err);

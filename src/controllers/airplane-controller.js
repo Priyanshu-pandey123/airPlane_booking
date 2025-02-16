@@ -3,16 +3,14 @@ const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils/error/app-error");
 const { errorResponse, successResponse } = require("../utils/common");
 const { success } = require("../utils/common/success.response");
-console.log(AirPlaneService, "airplane service");
 
 async function createPlane(req, res) {
-  console.log(req.body, "from airplane");
   try {
     const airplane = await AirPlaneService.createAirPlane({
       modelNumber: req.body.modelNumber,
       capacity: req.body.capacity,
     });
-    console.log(airplane, "form conroler");
+
     return res.status(StatusCodes.CREATED).json({
       success: true,
       message: "successfully created an airplane",

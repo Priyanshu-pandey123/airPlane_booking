@@ -7,7 +7,7 @@ const airplaneRepository = new AirPlaneRepository();
 async function createAirPlane(data) {
   try {
     const airplane = await airplaneRepository.create(data);
-    console.log(data, "from service");
+
     return airplane;
   } catch (err) {
     if (err.name == "TypeError") {
@@ -25,7 +25,7 @@ async function getAirPlane() {
     const data = airplaneRepository.findAll();
     return data;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 }
 async function getAirPlaneById(id) {

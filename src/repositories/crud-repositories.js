@@ -40,8 +40,8 @@ class CrudRepository {
 
   async findOne(id) {
     try {
+      console.log(id, "from crud");
       const response = await this.model.findByPk(id);
-
       if (!response) {
         throw new AppError(
           "cannot find the data by this id",
@@ -50,6 +50,7 @@ class CrudRepository {
       }
       return response;
     } catch (err) {
+      console.log(err);
       logger.error("Something went wrong in findOne: " + err);
       throw err;
     }
@@ -64,6 +65,7 @@ class CrudRepository {
       });
       return response;
     } catch (err) {
+      console.log(err);
       logger.error("Something went wrong in update: " + err);
       throw err;
     }

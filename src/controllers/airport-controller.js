@@ -1,20 +1,23 @@
-const { AirPlaneService } = require("../services/index");
+const { AirportServices } = require("../services/index");
 const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils/error/app-error");
 const { errorResponse, successResponse } = require("../utils/common");
 const { success } = require("../utils/common/success.response");
 
-async function createPlane(req, res) {
+async function createAirport(req, res) {
   try {
-    const airplane = await AirPlaneService.createAirPlane({
-      modelNumber: req.body.modelNumber,
-      capacity: req.body.capacity,
+    const { name, code, address, cityId } = req.body;
+    const airport = await AirportServices.createAirPort({
+      name,
+      code,
+      address,
+      cityId,
     });
 
     return res.status(StatusCodes.CREATED).json({
       success: true,
-      message: "successfully created an airplane",
-      data: airplane,
+      message: "successfully created an airport",
+      data: airport,
       error: {},
     });
   } catch (err) {
@@ -35,21 +38,22 @@ async function createPlane(req, res) {
   }
 }
 
-async function getFlight(req, res) {
+async function getAirport(req, res) {
   try {
-    const data = await AirPlaneService.getAirPlane();
+    const data = await AirportServices.getAirport();
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (err) {
     throw new AppError(
-      "Cannot fetch data from  the plane ",
+      "Cannot fetch data from  the airport ",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
 }
-async function getFlightId(req, res) {
+async function getAirportById(req, res) {
   try {
-    const data = await AirPlaneService.getAirPlaneById(req.params.id);
+    console.log(req.params.id);
+    const data = await AirportServices.getAirportById(req.params.id);
     successResponse.data = data;
     successResponse.message = "Successfully get the data";
     return res.status(StatusCodes.OK).json(successResponse);
@@ -61,7 +65,7 @@ async function getFlightId(req, res) {
 
 //TODO:  function for destroy the airplane
 module.exports = {
-  createPlane,
-  getFlight,
-  getFlightId,
+  createAirport,
+  getAirport,
+  getAirportById,
 };

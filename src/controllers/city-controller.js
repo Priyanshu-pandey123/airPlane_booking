@@ -6,7 +6,6 @@ const { AppError } = require("../utils/error/app-error");
 
 const createCity = async (req, res) => {
   try {
-    console.log(req.body, "from controller");
     const city = await CityServices.createCity(req.body);
     successResponse.message = "successfully created controller";
     successResponse.data = city;

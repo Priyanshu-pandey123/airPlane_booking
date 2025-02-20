@@ -6,12 +6,10 @@ const cityRepository = new CityRepository();
 
 async function createCity(data) {
   try {
-    console.log(data, "from services");
     const city = await cityRepository.create(data);
-    console.log(city);
+
     return city;
   } catch (err) {
-    console.log(err);
     if (err.name == "TypeError") {
       throw AppError(
         "cannot create a new airplane object",
